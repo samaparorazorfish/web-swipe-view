@@ -154,7 +154,10 @@
     },
     
     goToPage: function (p) {
-      this.masterPages[this.currentMasterPage].classList.remove('swipeview-active');
+      var classList = this.masterPages[this.currentMasterPage].className.split(' ');
+      classList = classList.filter(function(className){return className !== 'swipeview-active'});
+      this.masterPages[this.currentMasterPage].className= classList.join(' ');
+
       this.masterPages[this.currentMasterPage].style.position = 'absolute';
       
       newPageIndex = Math.min(this.options.numberOfPages - 1, Math.max(0, p));
@@ -168,10 +171,14 @@
 
       this.currentMasterPage = mod(this.currentMasterPage+turnOffset, 3);
       if (turnOffset !== 1 && turnOffset !== -1) {
-        this.masterPages[this.currentMasterPage].classList.add('swipeview-loading');
+          var classList = this.masterPages[this.currentMasterPage].className.split(' ');
+          classList.push('swipeview-loading');
+          this.masterPages[this.currentMasterPage].className = classList.join(' ');
       }
 
-      this.masterPages[this.currentMasterPage].classList.add('swipeview-active');
+      var classList = this.masterPages[this.currentMasterPage].className.split(' ');
+      classList.push('swipeview-active');
+      this.masterPages[this.currentMasterPage].className = classList.join(' ');
 
       var pages = this.currentMasterPage === 0 ? [2, 0, 1] :
                   this.currentMasterPage === 1 ? [0, 1, 2] :
@@ -333,7 +340,9 @@
     _checkPosition: function () {
       var pageFlip, pageFlipIndex, className;
 
-      this.masterPages[this.currentMasterPage].classList.remove('swipeview-active');
+      var classList = this.masterPages[this.currentMasterPage].className.split(' ');
+      classList = classList.filter(function(className){return className !== 'swipeview-active'});
+      this.masterPages[this.currentMasterPage].className= classList.join(' ');
       this.masterPages[this.currentMasterPage].style.position = 'absolute';
 
       // Flip the page, directionX == -1 when swiping right and +1 when swiping left
@@ -346,10 +355,14 @@
       pageFlipIndex = mod(this.pageIndex - this.directionX, this.options.numberOfPages);
 
       // Add active class to current page
-      this.masterPages[this.currentMasterPage].classList.add('swipeview-active');
+      classList = this.masterPages[this.currentMasterPage].className.split(' ');
+      classList.push('swipeview-active');
+      this.masterPages[this.currentMasterPage].className = classList.join(' ');
 
       // Add loading class to flipped page
-      this.masterPages[pageFlip].classList.add('swipeview-loading');
+      classList = this.masterPages[pageFlip].className.split(' ');
+      classList.push('swipeview-loading');
+      this.masterPages[pageFlip].className = classList.join(' ');
  
       this.masterPages[pageFlip].dataset.upcomingPageIndex = pageFlipIndex; // Index to be loaded in the newly flipped page
 
@@ -369,7 +382,10 @@
       this._triggerEvent('flip');
 
       for (var i=0; i<3; i++) {
-        this.masterPages[i].classList.remove('swipeview-loading');
+        var classList = this.masterPages[i].className.split(' ');
+        classList = classList.filter(function(className){return className !== 'swipeview-loading'});
+        this.masterPages[i].className= classList.join(' ');
+
         if (this.masterPages[i].dataset.pageIndex !== this.masterPages[i].dataset.upcomingPageIndex) {
           if (typeof this.options.teardownPage === 'function') {
             this.options.teardownPage(parseInt(this.masterPages[i].dataset.pageIndex, 10), this.masterPages[i]);
