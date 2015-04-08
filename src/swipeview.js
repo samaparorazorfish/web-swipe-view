@@ -96,8 +96,10 @@
       this.masterPages.push(div);
       this.options.generatePage(pageIndex, div);
     }
-    
-    this.masterPages[1].classList.add('swipeview-active');
+
+    var classList = this.masterPages[1].className.split(' ');
+    classList.push('swipeview-active');
+    this.masterPages[1].className = classList.join(' ');
 
     window.addEventListener(resizeEvent, this, false);
     this.slider.addEventListener(startEvent, this, false);
