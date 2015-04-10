@@ -36,6 +36,9 @@
   var moveEvent = hasTouch ? 'touchmove' : 'mousemove';
   var endEvent = hasTouch ? 'touchend' : 'mouseup';
   var cancelEvent = hasTouch ? 'touchcancel' : 'mouseup';
+  var eventCallbacks = {};
+
+
   var transitionEndEvent = (function () {
     if ( vendor === false ) return false;
 
@@ -118,16 +121,16 @@
     customEvents: [],
     
     onFlip: function (fn) {
-      this.slider.addEventListener('swipeview-flip', fn, false);
+      eventCallbacks['swipeview-flip'] = fn;
     },
     onMoveOut: function (fn) {
-      this.slider.addEventListener('swipeview-moveout', fn, false);
+      eventCallbacks['swipeview-moveout'] = fn;
     },
     onMoveIn: function (fn) {
-      this.slider.addEventListener('swipeview-movein', fn, false);
+      eventCallbacks['swipeview-movein'] = fn;
     },
     onTouchStart: function (fn) {
-      this.slider.addEventListener('swipeview-touchstart', fn, false);
+      eventCallbacks['swipeview-touchstart'] = fn;
     },
     destroy: function () {
       // Remove the global event listener
@@ -395,12 +398,9 @@
         this.masterPages[i].dataset.pageIndex = this.masterPages[i].dataset.upcomingPageIndex;
       }
     },
-    
     _triggerEvent: function (type) {
-      var ev = document.createEvent('Event');
-      ev.initEvent('swipeview-' + type, true, true);
-      this.slider.dispatchEvent(ev);
-    },
+      eventCallbacks['swipeview-' + type]();
+    }
   };
 
   function prefixStyle (style) {
