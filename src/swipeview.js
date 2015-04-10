@@ -399,10 +399,7 @@
       }
     },
     _triggerEvent: function (type) {
-      var callback = eventCallbacks['swipeview-' + type];
-      if(callback) {
-        callback();
-      }
+      eventCallbacks['swipeview-' + type]();
     }
   };
 
